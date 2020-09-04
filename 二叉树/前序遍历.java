@@ -17,7 +17,7 @@ class Solution {
         }
 
         stack.add(root);
-        
+
         while(!stack.isEmpty()){
             TreeNode node = stack.pollLast();
             output.add(node.val);
