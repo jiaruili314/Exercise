@@ -1,0 +1,42 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    int post_idx;       //指当前子树根，后序遍历的尾
+    int[] postorder;    
+    int[] inorder;      
+    //<node.val, node.key>
+    HashMap<Integer,Integer> idx_map = new HashMap<Integer, Integer>();
+    
+    public TreeNode helper(int in_left, int in_right){
+        if(in_left > in_right)
+            return null;
+        int root_val = postorder[post_idx];     //根取值
+        TreeNode root = new TreeNode(root_val); // 构造根
+        int index = idx_map.get(root_val);      //定位根的位置以分左右子树
+        post_idx--;                            //下一轮根
+        
+        root.right = helper(index + 1,in_right); //右树,必须先右后左否则 index - 1 超出边界
+        root.left = helper(in_left, index - 1); //左树
+        
+        
+        return root;
+    }
+
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        this.inorder = inorder;         //导入中序遍历序列
+        this.postorder = postorder;     //导入后序遍历序列
+        post_idx = postorder.length - 1;  //定位根
+
+        int idx = 0;
+        for(Integer val : inorder)
+            idx_map.put(val, idx++);    //中序序列存入hashmap<val, index>
+        return helper(0, postorder.length - 1);
+    }
+}
