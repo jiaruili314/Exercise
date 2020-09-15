@@ -1,0 +1,35 @@
+//有序数组寻找元素存在返回，不存在则插入
+
+
+
+//二分法
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+        int n = nums.length;
+        int left = 0,right = n - 1, ans = n;
+        while(left <= right){
+            int mid = ((right - left) >> 1) + left;//右移，比除2快
+            if(target <= nums[mid]){
+                ans = mid;
+                right = mid - 1;   
+            }            
+            else    left = mid + 1; 
+        }       
+        return ans;
+    }
+}
+
+
+
+
+
+
+//暴力法
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+        for(int i = 0; i < nums.length; i++){
+            if(target <= nums[i])   return i;       
+        }
+        return nums.length;
+    }
+}
